@@ -3,43 +3,45 @@ import { mount } from "enzyme";
 import Root from "../../Root";
 import CommentBox from "../CommentBox";
 
-let wrapped;
-beforeEach(() => {
-  wrapped = mount(
-    <Root>
-      <CommentBox />
-    </Root>
-  );
-});
-afterEach(() => {
-  wrapped.unmount();
-});
-
-it("has a text area and 2 buttons", () => {
-  expect(wrapped.find("textarea").length).toEqual(1);
-  expect(wrapped.find("button").length).toEqual(2);
-});
-
-describe("the text area", () => {
-  const testText = "new comment";
-
+describe("Comment box tests", () => {
+  let wrapped;
   beforeEach(() => {
-    wrapped
-      .find("textarea")
-      .simulate("change", { target: { value: testText } });
-    wrapped.update(); // Forces component to update
+    wrapped = mount(
+      <Root>
+        <CommentBox />
+      </Root>
+    );
+  });
+  afterEach(() => {
+    wrapped.unmount();
   });
 
-  it("has a text area that users can type in", () => {
-    expect(wrapped.find("textarea").prop("value")).toEqual(testText);
+  it("has a text area and 2 buttons", () => {
+    expect(wrapped.find("textarea").length).toEqual(1);
+    expect(wrapped.find("button").length).toEqual(2);
   });
 
-  it("should empty text area when form is submitted", () => {
-    wrapped
-      .find("textarea")
-      .simulate("change", { target: { value: testText } });
-    wrapped.find("form").simulate("submit");
-    wrapped.update();
-    expect(wrapped.find("textarea").prop("value")).toEqual("");
+  describe("the text area", () => {
+    const testText = "new comment";
+
+    beforeEach(() => {
+      wrapped
+        .find("textarea")
+        .simulate("change", { target: { value: testText } });
+      wrapped.update(); // Forces component to update
+    });
+
+    it("has a text area that users can type in", () => {
+      expect(wrapped.find("textarea").prop("value")).toEqual(testText);
+    });
+
+    it("should empty text area when form is submitted", () => {
+      wrapped
+        .find("textarea")
+        .simulate("change", { target: { value: testText } });
+      wrapped.find("form").simulate("submit");
+      wrapped.update();
+      expect(wrapped.find("textarea").prop("value")).toEqual("");
+    });
   });
 });
